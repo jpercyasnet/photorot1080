@@ -1,4 +1,4 @@
-use native_dialog::FileDialog;
+use rfd::FileDialog;
 use std::path::{Path};
 use std::fs;
 
@@ -12,9 +12,11 @@ pub fn c8_diroutpress (dirval: String) -> (u32, String, String) {
          new_dir = "/".to_string();
      }
      let folder = FileDialog::new()
-        .set_location(&new_dir)
-        .show_open_single_dir()
-        .unwrap();
+//        .set_location(&new_dir)
+//        .show_open_single_dir()
+//        .unwrap();
+         .set_directory(&new_dir)
+         .pick_folder();
      if folder == None {
          errstring = "error getting output directory -- possible cancel key hit".to_string();
          errcode = 1;

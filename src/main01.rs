@@ -33,13 +33,13 @@ use c8_copypress::c8_copypress;
 fn main() -> iced::Result {
      let mut widthxx: f32 = 1350.0;
      let mut heightxx: f32 = 750.0;
-     let (errcode, _errstring, widtho, heighto) = get_winsize();
+     let (errcode, errstring, widtho, heighto) = get_winsize();
      if errcode == 0 {
          widthxx = widtho as f32 - 20.0;
          heightxx = heighto as f32 - 75.0;
-//         println!("{}", errstring);
-//     } else {
-//         println!("**ERROR {} get_winsize: {}", errcode, errstring);
+         println!("{}", errstring);
+     } else {
+         println!("**ERROR {} get_winsize: {}", errcode, errstring);
      }
      iced::application(PhotoRot1080::title, PhotoRot1080::update, PhotoRot1080::view)
         .window_size((widthxx, heightxx))
@@ -98,7 +98,7 @@ impl PhotoRot1080 {
         let (tx_send, rx_receive) = mpsc::unbounded();
         (  PhotoRot1080 {
                 dir_value: "no directory".to_string(),
-                mess_color: Color::from([0.5, 0.5, 1.0]),
+                mess_color: Color::from([0.0, 0.0, 1.0]),
                 msg_value: "no message".to_string(),
                 do_progress: false,
                 pagechoice_value: PageChoice::ROT,
@@ -225,7 +225,7 @@ impl PhotoRot1080 {
 
             Message::INStartButton => {
                 if Path::new(&self.dir_value).exists() {
-                    stdCommand::new("indivrotatec1310")
+                    stdCommand::new("indivrotate1310")
                              .arg(&self.dir_value)
                              .spawn()
                              .expect("failed to execute process");
@@ -293,26 +293,22 @@ impl PhotoRot1080 {
                         if prog1 == "Progress" {
                             let num_int: i32 = progvec[1].parse().unwrap_or(-9999);
                             if num_int == -9999 {
-                                self.msg_value = format!("progress numeric not numeric: {}", inputval);
-                                self.mess_color = Color::from([1.0, 0.0, 0.0]);
+                                println!("progress numeric not numeric: {}", inputval);
                             } else {
                                 let dem_int: i32 = progvec[2].parse().unwrap_or(-9999);
                                 if dem_int == -9999 {
-                                    self.msg_value = format!("progress numeric not numeric: {}", inputval);
-                                    self.mess_color = Color::from([1.0, 0.0, 0.0]);
+                                    println!("progress numeric not numeric: {}", inputval);
                                 } else {
                                     self.progval = 100.0 * (num_int as f32 / dem_int as f32);
                                     self.msg_value = format!("Convert progress: {} of {}", num_int, dem_int);
-                                    self.mess_color = Color::from([0.5, 0.5, 1.0]);
+                                    self.mess_color = Color::from([0.0, 0.0, 1.0]);
                                 }
                             }
                         } else {
-                            self.msg_value = format!("message not progress: {}", inputval);
-                            self.mess_color = Color::from([1.0, 0.0, 0.0]);
+                            println!("message not progress: {}", inputval);
                         }
                     } else {
-                        self.msg_value = format!("message not progress: {}", inputval);
-                        self.mess_color = Color::from([1.0, 0.0, 0.0]);
+                        println!("message not progress: {}", inputval);
                     }
                 }             
                 Task::perform(Progstart::pstart(), Message::ProgRtn)

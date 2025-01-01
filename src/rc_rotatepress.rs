@@ -15,9 +15,9 @@ pub fn rc_rotatepress (dir_value: String, mergescrol_value: String) -> (u32, Str
              lenmg1 = lenmg1 - 1;
              for indl in 0..lenmg1 {
                 let str_cur_dirfrom = dir_value.clone();
-                let linestr = mergelistvec[indl].clone();
+                let linestr = mergelistvec[indl];
                 let lineparse: Vec<&str> = linestr[0..].split(" | ").collect();
-                let filefromx = lineparse[0].clone().to_string();
+                let filefromx = lineparse[0].to_string();
                 let fullfrom = str_cur_dirfrom.clone() + "/" + &filefromx[1..];
                 if !Path::new(&fullfrom).exists() {
                     errstring = format!("********* convert Copy: ERROR {} does not exist **********",fullfrom);
@@ -25,7 +25,7 @@ pub fn rc_rotatepress (dir_value: String, mergescrol_value: String) -> (u32, Str
                     errcode = 2;
                     break;
                 } else {
-                    let strval = lineparse[1].clone().to_string();
+                    let strval = lineparse[1].to_string();
                     let locind = strval.find("orientation");
                     if locind != None {
                         let start = locind.unwrap();
